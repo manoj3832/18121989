@@ -1,0 +1,56 @@
+[
+  {
+    "name": "business-entity-service",
+    "image": "dtr.aa.st/msfss/business-entity-service:BUILD_NUMBER",
+    "memoryReservation": 256,
+    "portMappings": [
+      {
+        "containerPort": 8081,
+        "hostPort": 0
+      }
+    ],
+
+    "logConfiguration": {
+      "logDriver": "gelf",
+      "options": {
+        "tag": "LOGTAG",
+        "gelf-address": "udp://graylog.msfss.aa.st:12201"
+      }
+    },
+    "environment": [
+      {
+        "name": "SECRETS_BUCKET_NAME",
+        "value": "SECRETBUCKETNAME"
+      },
+      {
+        "name": "SECRETS_BUCKET_REGION",
+        "value": "SECRETBUCKETREGION"
+      },
+      {
+        "name": "SERVICE_NAME",
+        "value": "business-entity-service"
+      },
+
+      {
+        "name": "INSTANCE_IDENTIFIER",
+        "value": "ZONE2"
+      },
+
+
+      {
+        "name": "INSTALLER_REDIRECT_URI",
+        "value": "https://FQDN/system-manager/"
+      },
+      {
+        "name": "ACCOUNT_MANAGER_REDIRECT_URI",
+        "value": "https://FQDN/system-manager/"
+      },
+      {
+        "name": "LOG_LEVEL",
+        "value": "LOGLEVELVALUE"
+      }
+
+    ],
+    "essential": true
+  }
+]

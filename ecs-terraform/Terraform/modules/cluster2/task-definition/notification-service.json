@@ -1,0 +1,75 @@
+[
+  {
+    "name": "notification-service",
+    "image": "dtr.aa.st/msf-common/notification-service:BUILD_NUMBER",
+    "memoryReservation": 256,
+    "portMappings": [
+      {
+        "containerPort": 8081,
+        "hostPort": 0
+      }
+    ],
+
+    "logConfiguration": {
+      "logDriver": "gelf",
+      "options": {
+        "tag": "LOGTAG",
+        "gelf-address": "udp://graylog.msfss.aa.st:12201"
+      }
+    },
+
+    "environment": [
+      {
+        "name": "SECRETS_BUCKET_NAME",
+        "value": "SECRETBUCKETNAME"
+      },
+      {
+        "name": "SECRETS_BUCKET_REGION",
+        "value": "SECRETBUCKETREGION"
+      },
+      {
+        "name": "SERVICE_NAME",
+        "value": "notification-service"
+      },
+
+      {
+        "name": "CORE_POOL_SIZE",
+        "value": "5"
+      },
+      {
+        "name": "MAX_POOL_SIZE",
+        "value": "20"
+      },
+      {
+        "name": "SEND_EMAIL_TO_ONE_ID",
+        "value": "EMAILTOONEID"
+      },
+      {
+        "name": "RECIEVER_EMAIL_ID",
+        "value": "nikita.nuwal@assaabloy.com;@cecilia.com=rupinder.singh@assaabloy.com;@test.com=chandra.karn@assaabloy.com;@accentra.com=rocketmsfssnotifications@assaabloy.com;"
+      },
+      {
+        "name": "COPY_RECIEVER_EMAIL_ID",
+        "value": "harpreet.singh@assaabloy.com"
+      },
+
+      {
+        "name": "SENDER_EMAIL_ID",
+        "value": "ASSAABLOYAB-ST-MSFServices@email.assaabloy.com"
+      },
+      {
+        "name": "SENDER_NAME",
+        "value": "ASSA ABLOY Cloud Services Team"
+      },
+      {
+        "name": "SEND_EMAIL_FLAG",
+        "value": "true"
+      },
+      {
+        "name": "LOG_LEVEL",
+        "value": "LOGLEVELVALUE"
+      }
+    ],
+    "essential": true
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "name": "authentication-service",
+    "image": "dtr.aa.st/msfss/authentication-service:BUILD_NUMBER",
+    "memoryReservation": 256,
+    "portMappings": [
+      {
+        "containerPort": 8081,
+        "hostPort": 0
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "gelf",
+      "options": {
+        "tag": "LOGTAG",
+        "gelf-address": "udp://graylog.msfss.aa.st:12201"
+      }
+    },
+
+
+    "environment": [
+
+      {
+        "name": "INSTANCE_IDENTIFIER",
+        "value": "ZONE1"
+      },
+      {
+        "name": "SECRETS_BUCKET_NAME",
+        "value": "SECRETBUCKETNAME"
+      },
+      {
+        "name": "SECRETS_BUCKET_REGION",
+        "value": "SECRETBUCKETREGION"
+      },
+      {
+        "name": "SERVICE_NAME",
+        "value": "authentication-service"
+      },
+      {
+        "name": "CORE_POOL_SIZE",
+        "value": "5"
+      },
+      {
+        "name": "MAX_POOL_SIZE",
+        "value": "20"
+      },
+      {
+        "name": "LOG_LEVEL",
+        "value": "LOGLEVELVALUE"
+      }
+    ],
+    "essential": true
+  }
+]

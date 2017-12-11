@@ -1,0 +1,66 @@
+{
+  "variables": {
+    "aws_access_key":     "",
+    "aws_secret_key":     "",
+    "aws_region"       :  "",
+    "aws_instance_type":  "",
+    "ami_name":               "",
+    "ssh_username": "",
+    "ssh_keypair_name": "",
+    "ssh_private_key_file": "",
+    "OS_Version": "",
+    "stack": "",
+    "script_path": "",
+    "aws_ami_name": "",
+    "aws_owner": ""
+  },
+
+  "builders": [
+    {
+      "name": "{{user `ami_name`}}-{{user `aws_ami_name`}}",
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "{{user `aws_region`}}",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "{{user `aws_ami_name`}}-*",
+          "root-device-type": "ebs"
+        },
+        "owners": ["{{user `aws_owner`}}"],
+        "most_recent": true
+      },
+      "instance_type": "{{user `aws_instance_type`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_keypair_name": "{{user `ssh_keypair_name`}}",
+      "ssh_private_key_file": "{{user `ssh_private_key_file`}}",
+      "ami_name": "{{user `ami_name`}}-{{user `aws_ami_name`}}",
+      "associate_public_ip_address": true,
+      "force_deregister": true,
+      "run_tags": {
+        "ami-create": "{{user `aws_region`}}"
+      },
+      "launch_block_device_mappings": [
+        {
+          "device_name": "/dev/xvda",
+          "volume_size": 50,
+          "volume_type": "gp2",
+          "delete_on_termination": true
+        }
+      ],
+      "tags": {
+        "Name": "{{user `ami_name`}}-{{user `aws_ami_name`}}",
+        "OS Version": "{{user `OS_Version`}}",
+        "Release": "{{isotime `02-Jan-06`}}",
+        "Stack": "{{user `stack`}}"
+      }
+    }],
+
+  "provisioners": [{
+    "type": "shell",
+    "script": "{{user `script_path`}}"
+  }
+  ]
+
+}

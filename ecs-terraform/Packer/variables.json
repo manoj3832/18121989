@@ -1,0 +1,13 @@
+{
+  "aws_region":  "eu-central-1",
+  "aws_instance_type": "t2.small",
+  "ami_name": "msfss-rabbitmq-base",
+  "ssh_username": "ec2-user",
+  "ssh_keypair_name": "msfss-infra-integration",
+  "ssh_private_key_file": "key/temp_.pem",
+  "OS_Version": "Amazon Linux",
+  "stack": "msfss",
+  "script_path": "provisioner/rabbitmq_data.sh",
+  "aws_ami_name": "amzn-ami-hvm-2016.09.1.20170119-x86_64",
+  "aws_owner": "msf-sharedtech"
+}

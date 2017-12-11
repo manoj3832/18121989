@@ -1,0 +1,75 @@
+[
+  {
+    "name": "identity-service",
+    "image": "dtr.aa.st/msfss/identity-service:BUILD_NUMBER",
+    "memoryReservation": 256,
+    "portMappings": [
+      {
+        "containerPort": 8081,
+        "hostPort": 0
+      }
+    ],
+
+    "logConfiguration": {
+      "logDriver": "gelf",
+      "options": {
+        "tag": "LOGTAG",
+        "gelf-address": "udp://graylog.msfss.aa.st:12201"
+      }
+    },
+
+    "environment": [
+
+      {
+        "name": "SECRETS_BUCKET_NAME",
+        "value": "SECRETBUCKETNAME"
+      },
+      {
+        "name": "INSTANCE_IDENTIFIER",
+        "value": "ZONE2"
+      },
+      {
+        "name": "SECRETS_BUCKET_REGION",
+        "value": "SECRETBUCKETREGION"
+      },
+      {
+        "name": "SERVICE_NAME",
+        "value": "identity-service"
+      },
+
+      {
+        "name": "RECAPTCHA_ENABLED",
+        "value": "true"
+      },
+      {
+        "name": "RECAPTCHA_SITE",
+        "value": "6LcwNBIUAAAAAPj4oGcpPdM69PY9zd08PU36TSKG"
+      },
+      {
+        "name": "RECAPTCHA_MAX_RETRIES",
+        "value": "9"
+      },
+      {
+        "name": "AUTHENTICATION_URL",
+        "value": "https://FQDN/login/"
+      },
+      {
+        "name": "SYSTEM_MANAGER_REDIRECT_URL",
+        "value": "https://FQDN/system-manager/"
+      },
+      {
+        "name": "INSTALLER_REDIRECT_URL",
+        "value": "https://FQDN/config/"
+      },
+      {
+        "name": "LOST_PASSWORD_TEMPLATE_ID",
+        "value": "bdfbd216-9ded-4140-b285-3f732d4ed403"
+      },
+      {
+        "name": "LOG_LEVEL",
+        "value": "LOGLEVELVALUE"
+      }
+    ],
+    "essential": true
+  }
+]

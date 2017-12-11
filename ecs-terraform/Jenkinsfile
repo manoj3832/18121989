@@ -1,0 +1,39 @@
+node("base") {
+
+      properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '30', numToKeepStr: '15')), gitLabConnection('https://git.st.assaabloy.net'), [$class: 'GitlabLogoProperty', repositoryName: ''], parameters([choice(choices: "authentication-frontend\nsystem-manager-frontend\nclient-management-frontend\nauthentication-connector\nadministration-connector\nclient-management-connector\nsystem-services-connector\nconfiguration-services-connector\nauthentication-service\nidentity-service\nsystem-service\nbusiness-entity-service\nauthorization-service\nnotification-service", description: 'Name of Micro Service Docker Container', name: 'CONTAINER_NAME'), choice(choices: "cluster1\ncluster2", description: 'ECS TARGET CLUSTER', name: 'TARGET'), choice(choices: "production\nstage\nintegration", description: 'ENVIRONMENT NAME', name: 'ENV'), string(defaultValue: 'latest', description: 'CONTAINER TAG WITH LAST STABLE BUILD  NUMBER', name: 'DOCKER_TAG')]), pipelineTriggers([])])
+
+      def Script_Path ="$WORKSPACE/infrastructure-configuration/msfss-ecs-terraform/Terraform"
+
+      // Define Parameter
+
+
+
+
+      stage("Checkout") {
+        checkout scm
+      }
+
+      stage("Push Service Tag To Target") {
+
+                   sh "sed -i s/BUILD_NUMBER/${DOCKER_TAG}/g ${Script_Path}/modules/${TARGET}/task-definition/${CONTAINER_NAME}.json"
+
+                   dir("${Script_Path}") {
+
+                        sh "sudo bash assume_variable_change.sh ${ENV}"
+                        // Initialte S3 state and Get all Terraform required modules
+                        sh "/home/ec2-user/terraform get"
+                        sh "/home/ec2-user/terraform init"
+
+                        // check and updated ECS task definition with new image version
+                        sh "sudo bash assume_role_switch.sh /home/ec2-user/terraform apply -var-file ${ENV}.tfvars --target=module.${TARGET}.aws_ecs_task_definition.${CONTAINER_NAME}"
+                        sh "sudo bash assume_role_switch.sh /home/ec2-user/terraform apply -var-file ${ENV}.tfvars --target=module.${TARGET}.aws_ecs_service.${CONTAINER_NAME}"
+                   }
+
+
+      }
+      stage("Wipe Out DIR") {
+            deleteDir()
+
+      }
+
+}

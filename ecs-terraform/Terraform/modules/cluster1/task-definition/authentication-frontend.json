@@ -1,0 +1,31 @@
+[
+  {
+    "name": "authentication-frontend",
+    "image": "dtr.aa.st/msfss/authentication-frontend:BUILD_NUMBER",
+    "memoryReservation": 256,
+    "portMappings": [
+
+      {
+        "containerPort": 8080,
+        "hostPort": 0
+      }
+      ],
+
+      "logConfiguration": {
+        "logDriver": "gelf",
+        "options": {
+          "tag": "LOGTAG",
+          "gelf-address": "udp://graylog.msfss.aa.st:12201"
+        }
+      },
+
+    "environment": [
+      {
+        "name": "server_url",
+        "value": "https://API"
+      }
+
+    ],
+    "essential": true
+  }
+]

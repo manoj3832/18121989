@@ -1,0 +1,51 @@
+[
+  {
+    "name": "authentication-connector",
+    "image": "dtr.aa.st/msfss/authentication-connector:BUILD_NUMBER",
+    "memoryReservation": 256,
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "hostPort": 0
+      }
+
+    ],
+
+    "logConfiguration": {
+      "logDriver": "gelf",
+      "options": {
+        "tag": "LOGTAG",
+        "gelf-address": "udp://graylog.msfss.aa.st:12201"
+      }
+    },
+
+    "environment": [
+      {
+        "name": "SECRETS_BUCKET_NAME",
+        "value": "SECRETBUCKETNAME"
+      },
+      {
+        "name": "SECRETS_BUCKET_REGION",
+        "value": "SECRETBUCKETREGION"
+      },
+      {
+        "name": "SERVICE_NAME",
+        "value": "authentication-connector"
+      },
+      {
+        "name": "INSTANCE_IDENTIFIER",
+        "value": "ZONE1"
+      },
+      {
+        "name": "LOG_LEVEL",
+        "value": "LOGLEVELVALUE"
+      },
+      {
+        "name": "AUTHENTICATION_FRONTEND_URL",
+        "value": "https://FQDN/login/"
+      }
+
+    ],
+    "essential": true
+  }
+]

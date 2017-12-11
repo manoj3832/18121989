@@ -1,0 +1,49 @@
+[
+  {
+    "name": "client-management-connector",
+    "image": "dtr.aa.st/msfss/client-management-connector:BUILD_NUMBER",
+    "memoryReservation": 256,
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "hostPort": 0
+      }
+
+    ],
+    "logConfiguration": {
+      "logDriver": "gelf",
+      "options": {
+        "tag": "LOGTAG",
+        "gelf-address": "udp://graylog.msfss.aa.st:12201"
+      }
+    },
+    "environment": [
+      {
+        "name": "SECRETS_BUCKET_NAME",
+        "value": "SECRETBUCKETNAME"
+      },
+      {
+        "name": "SECRETS_BUCKET_REGION",
+        "value": "SECRETBUCKETREGION"
+      },
+      {
+        "name": "SERVICE_NAME",
+        "value": "client-management-connector"
+      },
+      {
+        "name": "INSTANCE_IDENTIFIER",
+        "value": "ZONE2"
+      },
+      {
+        "name": "LOGIN_URL",
+        "value": "https://FQDN/authentication/authorization-request?client-id=067e6162-3b6f-4ae2-a171-2470b63dff00&redirect-uri=https://FQDN/client-manager/"
+      },
+      {
+        "name": "LOG_LEVEL",
+        "value": "LOGLEVELVALUE"
+      }
+
+    ],
+    "essential": true
+  }
+]

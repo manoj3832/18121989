@@ -1,0 +1,84 @@
+version: '3'
+
+services:
+
+ web:
+    image: awx_web:1.0.1.281
+    hostname: awxweb
+    networks:
+      - test
+    user: awxuser
+    ports:
+        - 443:8443
+    environment:
+      SECRET_KEY: "awxsecret"
+      DATABASE_NAME: "awx"
+      DATABASE_USER: "awx"
+      DATABASE_PASSWORD: "awxpass"
+      DATABASE_PORT: "5432"
+      DATABASE_HOST: "db"
+      RABBITMQ_USER: "guest"
+      RABBITMQ_PASSWORD: "guest"
+      RABBITMQ_HOST: "rabbit1"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_VHOST: "/"
+#      CELERY_RDB_HOST: "0.0.0.0"
+#      AWX_GROUP_QUEUES: "tower"
+      MEMCACHED_HOST: "mem"
+      MEMCACHED_PORT: "11211"
+      AWX_ADMIN_USER: "admin"
+      AWX_ADMIN_PASSWORD: "password"
+    restart: always
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+     # resources:
+     #    limits:
+     #      memory: 512M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+ task:
+    image: awx_task:1.0.1.281
+    hostname: awx
+    networks:
+      - test
+    user: awxuser
+    environment:
+      SECRET_KEY: "awxsecret"
+      DATABASE_NAME: "awx"
+      DATABASE_USER: "awx"
+      DATABASE_PASSWORD: "awxpass"
+      DATABASE_PORT: "5432"
+      DATABASE_HOST: "db"
+      RABBITMQ_USER: "guest"
+      RABBITMQ_PASSWORD: "guest"
+      RABBITMQ_HOST: "rabbit1"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_VHOST: "/"
+ #     CELERY_RDB_HOST: "0.0.0.0"
+ #     AWX_GROUP_QUEUES: "tower"
+      MEMCACHED_HOST: "mem"
+      MEMCACHED_PORT: "11211"
+      AWX_ADMIN_USER: "admin"
+      AWX_ADMIN_PASSWORD: "password"
+    restart: always
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+     # resources:
+     #    limits:
+     #      memory: 512M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+
+networks:
+    test:
+

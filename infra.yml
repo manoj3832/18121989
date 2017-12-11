@@ -1,0 +1,82 @@
+version: '3'
+
+services:
+
+ db:
+    image: postgres:9.6
+    hostname: postgres
+    user: postgres
+    networks:
+      - test
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: "awx"
+      POSTGRES_PASSWORD: "awxpass"
+      POSTGRES_DB: "awx"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+ rabbit1:
+  image: bijukunjummen/rabbitmq-server:3.6.10
+  hostname: rabbit1
+  networks:
+      - test
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+  environment:
+    - RABBITMQ_DEFAULT_USER=guest
+    - RABBITMQ_DEFAULT_PASS=guest
+  deploy:
+      placement:
+        constraints: [node.role == manager]
+ rabbit2:
+  image: bijukunjummen/rabbitmq-server:3.6.10
+  hostname: rabbit2
+  networks:
+      - test
+  depends_on:
+    - rabbit1
+  environment:
+   - CLUSTERED=true
+   - CLUSTER_WITH=rabbit1
+   - RAM_NODE=true
+  ports:
+      - "5673:5672"
+      - "15673:15672"
+  deploy:
+      placement:
+        constraints: [node.role == manager]
+
+ rabbit3:
+  image: bijukunjummen/rabbitmq-server:3.6.10
+  hostname: rabbit3
+  networks:
+      - test
+  depends_on:
+    - rabbit1
+    - rabbit2
+  environment:
+   - CLUSTERED=true
+   - CLUSTER_WITH=rabbit1
+  ports:
+        - "5674:5672"
+  deploy:
+      placement:
+        constraints: [node.role == manager]
+
+ mem:
+   image: memcached:alpine
+   hostname: memcache
+   networks:
+      - test
+   ports:
+    - 11211:11211
+   deploy:
+      placement:
+        constraints: [node.role == manager]
+
+networks:
+   test:
